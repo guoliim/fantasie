@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="musicRadioApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!-- Fallback to homescreen for Chrome <39 on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>Fantasie</title>
+
+    <script src="/frontend/node_modules/angular/angular.js"></script>
+    <script src="/frontend/node_modules/angular-resource/angular-resource.js"></script>
+    <script src="/frontend/node_modules/angular-route/angular-route.js"></script>
+    <script src="/frontend/node_modules/material-design-lite/material.js"></script>
+    <script src="/frontend/js/app.js"></script>
+    <script src="/frontend/js/controllers.js"></script>
+    <script src="/frontend/js/services.js"></script>
+    <script src="/frontend/js/config.js"></script>
+
+    <link rel="stylesheet" href="/frontend/node_modules/material-design-lite/material.css">
+    <link rel="stylesheet" href="/frontend/css/list.css">
+
+</head>
+<body ng-controller="MusicPlayer">
+<div class="mdl-layout mdl-js-layout">
+    <audio id="playing"></audio>
+    <header class="mdl-layout__header mdl-layout__header--waterfall" style="background: #616161; display: block">
+        <!--Top row, always visible-->
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">Fantasie</span>
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+                <label class="mdl-button mdl-js-button mdl-button--icon"
+                       for="waterfall-exp">
+                    <i class="material-icons"><img  style="color: #ffffff" src="/frontend/node_modules/material-design-icons/action/svg/production/ic_search_24px.svg"></i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <input class="mdl-textfield__input" type="text" name="sample"
+                           id="waterfall-exp" ng-model="factor"  ng-keypress="matching($event)">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <div ng-view></div>
+    </main>
+
+    <!--bottom player -->
+    <div class="mdl-card player-container">
+        <div style="width: 100%;" id="progress_exp" class="mdl-progress mdl-js-progress"></div>
+        <div style="margin-top: 8px;margin-bottom: 8px;margin-right: 12px;position: absolute;right: 12px">
+            <div>{{curtTime*1000 | date :'mm:ss'}} / {{musicinfo.length*1000 | date :'mm:ss'}}</div>
+        </div>
+        <div style="display: block">
+            <a class="mdl-navigation__link" ng-href="#/fantasie/{{switch}}" ng-click="linkChange()">
+                <div style="position: absolute; left: 0; display: inline-flex">
+                    <div class="thumb-img">
+                        <img ng-src="{{imagePath}}" style="width: 100%; height: 100%">
+                    </div>
+                    <div class="thumb-album">
+                        <div style="margin-top: 20px; font-size: 16px; width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{musicinfo.title}}</div>
+                        <div style="margin-bottom: 16px; font-size: 13px; width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{musicinfo.artist + ' - ' + musicinfo.album}}</div>
+                    </div>
+                </div>
+            </a>
+
+            <!--<button class="mdl-button mdl-js-button mdl-button&#45;&#45;icon footer-icon">-->
+                <!--<img  style="vertical-align:baseline; width: 100%; height: 100%;" src="node_modules/material-design-icons/navigation/svg/production/ic_more_vert_48px.svg">-->
+            <!--</button>-->
+            <!--<button class="mdl-button mdl-js-button mdl-button&#45;&#45;icon footer-icon">-->
+                <!--<img  style="vertical-align:baseline; width: 100%; height: 100%;" src="node_modules/material-design-icons/action/svg/production/ic_favorite_48px.svg">-->
+            <!--</button>-->
+            <!--<button class="mdl-button mdl-js-button mdl-button&#45;&#45;icon footer-icon">-->
+                <!--<img  style="vertical-align:baseline; width: 100%; height: 100%;" src="node_modules/material-design-icons/action/svg/production/ic_delete_48px.svg">-->
+            <!--</button>-->
+            <button class="mdl-button mdl-js-button mdl-button--icon footer-icon" ng-click="repeat()">
+                <img id="repeat" style="vertical-align:baseline; width: 100%; height: 100%;" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_repeat_48px.svg">
+                <img id="repeat-one" style="vertical-align:baseline; width: 100%; height: 100%; display: none" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_repeat_one_48px.svg">
+            </button>
+            <!--<button class="mdl-button mdl-js-button mdl-button&#45;&#45;icon footer-icon">-->
+                <!--<img  style="vertical-align:baseline; width: 100%; height: 100%;" src="node_modules/material-design-icons/av/svg/production/ic_skip_previous_48px.svg">-->
+            <!--</button>-->
+            <button class="mdl-button mdl-js-button mdl-button--icon play-icon" ng-click="playpause()">
+                <img id="play" style="width: 100%; height: 100%;" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_play_arrow_48px.svg">
+                <img id="pause" style="width: 100%; height: 100%; display: none" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_pause_48px.svg">
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--icon footer-icon" ng-click="nexting()">
+                <img  style="vertical-align:baseline; width: 100%; height: 100%;" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_skip_next_48px.svg">
+            </button>
+            <!--<input id="vol" type="range" min="0" max="100" ng-model="volumes" ng-change="volumeChanged()">-->
+            <!--{{volumes}}-->
+            <button class="mdl-button mdl-js-button mdl-button--icon" style="width: 24px; height: 24px;">
+                <img  style="vertical-align:baseline; width: 100%; height: 100%;" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_volume_down_48px.svg">
+            </button>
+            <p style="display: inline-flex; width: 135px;">
+                <input id="vol" style="width: 100%; margin: 0;height: 50%;" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" ng-model="volumes" ng-change="volumeChanged()">
+            </p>
+            <button class="mdl-button mdl-js-button mdl-button--icon" style="width: 24px; height: 24px;">
+                <img  style="vertical-align:baseline; width: 100%; height: 100%;" src="/frontend/node_modules/material-design-icons/av/svg/production/ic_volume_up_48px.svg">
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

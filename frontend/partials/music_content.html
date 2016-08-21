@@ -1,0 +1,21 @@
+ <div class="page-content">
+        <div style="position: relative; padding-left: 8px; padding-right: 8px;margin: 154px 72px 30px 72px; display: block;">
+                <div class="mdl-card mdl-shadow--2dp music-content">
+                    <div id="album-content" style="display: inline-flex">
+                        <div class="img-album">
+                            <img ng-src="{{imagePath}}" style="width: 100%; height: 100%">
+                        </div>
+                        <div class="detail-album">
+                            <div style="font-size: 32px; line-height: 36px; padding-top: 12px; padding-bottom: 12px; max-width: calc(100% - 34px); overflow: hidden;">{{musicinfo.title}}</div>
+                            <div style="font-size: 18px; padding-bottom: 8px; max-width: calc(100% - 18px); overflow: hidden;">{{musicinfo.artist}}</div>
+                            <div>{{musicinfo.album}} / {{musicinfo.genre}} / {{musicinfo.year}}</div>
+                        </div>
+                    </div>
+                    <!--<div ng-repeat=" song in songs">-->
+                        <!--<div class="mdl-card__actions mdl-card&#45;&#45;border">-->
+                            <!--<h4 style="margin-left: 4px">{{song.title}}</h4>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+        </div>
+    </div>

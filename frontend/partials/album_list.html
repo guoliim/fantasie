@@ -1,0 +1,23 @@
+<div class="page-content" style="margin-top: 72px">
+    <!--<div style="position: relative; margin: 120px 72px 30px 72px; display: block;">-->
+        <!--<div class="mdl-card mdl-shadow&#45;&#45;2dp album_list">-->
+            <!--<div id="album-content">-->
+                <!--<a class="mdl-navigation__link" href="#/radio">-->
+                    <!--<h4 style="margin-left: 4px">album-list</h4>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div ng-repeat=" song in items">
+        <div style="position: relative; margin: 20px 72px 30px 72px; display: block;">
+        <div class="mdl-card mdl-shadow--2dp album_list">
+        <div id="album-content">
+        <!--<a class="mdl-navigation__link" href="#/radio">-->
+        <a class="mdl-navigation__link" ng-href="#/play/{{song.album}}">
+        <h4 style="margin-left: 4px">{{song.album}}</h4>
+        </a>
+        </div>
+        </div>
+        </div>
+    </div>
+</div>

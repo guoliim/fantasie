@@ -1,0 +1,7 @@
+django
+celery
+redis
+django-celery
+djangorestframework
+psycopg2
+pydub
